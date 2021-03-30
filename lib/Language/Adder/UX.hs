@@ -37,6 +37,7 @@ import           Control.Exception
 import           Data.Typeable
 import qualified Data.List as L
 import           Text.Megaparsec
+import           Text.Megaparsec.Pos
 import           Text.Printf (printf)
 import           Language.Adder.Utils
 
@@ -52,6 +53,9 @@ class PPrint a where
 class Located a where
   sourceSpan :: a -> SourceSpan
 
+instance Located SourceSpan where
+  sourceSpan x = x
+  
 --------------------------------------------------------------------------------
 -- | Source Span Representation
 --------------------------------------------------------------------------------
@@ -61,9 +65,10 @@ data SourceSpan = SS
   }
   deriving (Eq, Show)
 
+instance Semigroup SourceSpan where 
+  (<>) = mappendSpan
 instance Monoid SourceSpan where
   mempty  = junkSpan
-  mappend = mappendSpan
 
 mappendSpan :: SourceSpan -> SourceSpan -> SourceSpan
 mappendSpan s1 s2
@@ -181,7 +186,6 @@ abort e = throw [e]
 mkError :: Text -> SourceSpan -> UserError
 --------------------------------------------------------------------------------
 mkError msg l = Error msg l
-
 renderErrors :: [UserError] -> IO Text
 renderErrors es = do
   errs  <- mapM renderError es

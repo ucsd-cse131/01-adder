@@ -1,24 +1,22 @@
 ######################################################
-COURSE=cs131f
-ORG=ucsd-cse131-fa18
+ORG=ucsd-cse131
 ASGN=01
 COMPILER=adder
 EXT=adder
-
 ######################################################
 
 COMPILEREXEC=stack exec -- $(COMPILER)
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
-  FORMAT=aout
+  FORMAT=elf64
 else
 ifeq ($(UNAME), Darwin)
-  FORMAT=macho
+  FORMAT=macho64
 else
 ifeq ($(UNAME), CYGWIN_NT-10.0)
-  FORMAT=win
-  WINSTUFF=-target i686-pc-mingw32
+  FORMAT=win64
+  WINSTUFF=-target i686-pc-mingw64
 endif
 endif
 endif
@@ -33,7 +31,7 @@ tests/output/%.result: tests/output/%.run
 	$< > $@
 
 tests/output/%.run: tests/output/%.o c-bits/main.c
-	clang $(WINSTUFF) -g -m32 -o $@ c-bits/main.c $<
+	clang $(WINSTUFF) -g -m64 -o $@ c-bits/main.c $<
 
 tests/output/%.o: tests/output/%.s
 	nasm -f $(FORMAT) -o $@ $<

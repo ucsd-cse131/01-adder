@@ -1,6 +1,5 @@
 module Language.Adder.Asm (asm) where
 
-import           Data.Monoid
 import qualified Data.List as L
 import           Text.Printf (printf)
 import           Language.Adder.Types
@@ -10,7 +9,7 @@ import           Language.Adder.Types
 --------------------------------------------------------------------------------
 asm :: [Instruction] -> Text
 --------------------------------------------------------------------------------
-asm instrs = header <> instrsAsm (instrs) <> "\n"
+asm instrs = header <> instrsAsm instrs <> "\n"
 
 instrsAsm :: [Instruction] -> Text
 instrsAsm = L.intercalate "\n" . map instrAsm
@@ -28,14 +27,17 @@ header = unlines
 instrAsm :: Instruction -> Text
 --------------------------------------------------------------------------------
 instrAsm (IMov dst val) = printf "  mov %s, %s"  (argAsm dst) (argAsm val)
-instrAsm (IAdd dst val) = error  "TBD"
+instrAsm (IAdd dst val) = error "fill this in"
 instrAsm IRet           =        "  ret"
 
 regAsm :: Reg -> Text
 regAsm EAX = "eax"
-regAsm ESP = error "TBD"
+regAsm RBP = error "fill this in"
 
 argAsm :: Arg -> Text
 argAsm (Const n)       = printf "%d" n
 argAsm (Reg r)         = regAsm r
-argAsm (RegOffset n r) = error "TBD"
+argAsm (RegOffset n r)
+  | 0 <= n             = error "fill this in"
+  | otherwise          = error "fill this in"
+

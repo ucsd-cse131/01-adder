@@ -7,9 +7,9 @@ Adder (because it primarily adds things).
 
 ## Download 
 
-1. Use the _fork link_ from the class website to create your private clone of the starter code.
+1. Use the _link_ from the github classroom to create your private clone of the starter code.
 
-2. Do `git clone https://github.com/ucsd-cse131-fa18/00-warmup-XXX` where `XXX` is your private repo.
+2. Do `git clone https://github.com/ucsd-cse131/ucsd-cse131-sp21-01-adder-XYZ` where `XYZ` is your username.
 
 3. Link your clone to the "upstream" to get any updates
 
@@ -26,8 +26,7 @@ $ make update
 4. Save (and submit) your work with: 
 
 ```
-$ git commit -a -m MESSAGE 
-$ git push 
+$ make turnin 
 ```
 
 ## The Adder Language
@@ -354,7 +353,7 @@ For each test called `FILE`, we have the following files:
 * `tests/output/FILE.log`    : The log of all messages generated during compiling & linking.
 
 Only the first of the above is _hand written_; the rest
-are all automatically generated.
+are all **automatically generated**.
 
 **To generate assembly** for an individual test, do:
 
@@ -400,9 +399,7 @@ instructions without the compiler in the way.
 
 The creators of the **5 hardest tests** get **5%** of total points as **extra credit**
 
-* You can add up to 10 new tests in `tests/yourTests.json`
-
-* Feel free to add more, we'll just take the first 10.
+* You can add up to 5 new tests in `tests/yourTests.json`
 
 * A test's "score" is the total number of compilers
   (submitted by the entire class) on which the test
@@ -413,16 +410,18 @@ The creators of the **5 hardest tests** get **5%** of total points as **extra cr
 
 ## Submission Instructions
 
-Before submitting your code, you have to fill [this form](https://goo.gl/forms/3KBuBTilmvMKFD223)
-to register your groups. We will use this form to match your 
-github account username to your student id, so you **must** 
-fill it even if you have worked on the assignment individually.
+To submit you must:
 
-To submit your code, just do:
+1. [Fill this form](https://forms.gle/mW9FcrUHRrAr4uUG9) with your information,
+
+2. Add the names of your group members in `COLLABORATORS.md` (leave blank if working individually),
+
+3. `commit` and `push` your code by typing 
 
 ```bash
 $ make turnin 
 ```
 
 This will simply do a `git commit` followed by a `git push` to send us your code.
+
 **We will use the _most recent commit_ of your code (on `master` branch) as your submission.**

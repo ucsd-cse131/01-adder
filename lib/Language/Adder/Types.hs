@@ -46,7 +46,7 @@ import           Language.Adder.UX
 
 data Reg
   = EAX
-  | ESP
+  | RBP
   deriving Show
 
 data Arg

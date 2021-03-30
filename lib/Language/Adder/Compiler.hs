@@ -29,8 +29,6 @@ type Tag   = SourceSpan
 type AExp  = Expr Tag
 type ABind = Bind Tag
 
-instance Located Tag where
-  sourceSpan x = x
 
 --------------------------------------------------------------------------------
 -- | @compile@ a (tagged-ANF) expr into assembly
@@ -42,12 +40,15 @@ compile e = compileEnv emptyEnv e ++ [IRet]
 --------------------------------------------------------------------------------
 compileEnv :: Env -> AExp -> [Instruction]
 --------------------------------------------------------------------------------
-compileEnv _   (Number n l)     = [ IMov (Reg EAX) (repr n) ]
-compileEnv env (Prim1 Add1 e l) = error "TBD"
-compileEnv env (Prim1 Sub1 e l) = error "TBD"
-compileEnv env (Id x l)         = error "TBD"
-compileEnv env (Let x e1 e2 l)  = error "TBD"
+compileEnv _   (Number n _)     = [ IMov (Reg EAX) (repr n) ]
 
+compileEnv env (Prim1 Add1 e _) = error "fill this in"
+
+compileEnv env (Prim1 Sub1 e _) = error "fill this in"
+
+compileEnv env (Id x l)         = error "fill this in"
+
+compileEnv env (Let x e1 e2 _)  = error "fill this in"
 --------------------------------------------------------------------------------
 -- | Representing Values
 --------------------------------------------------------------------------------

@@ -10,10 +10,8 @@ import           Paths_adder
 main :: IO ()
 main = do
   sc <- initScore
-
   testsFile     <- getDataFileName "tests/tests.json"
   yourTestsFile <- getDataFileName "tests/yourTests.json"
-
   adderTests <- readTests sc testsFile
   yourTests  <- readTests sc yourTestsFile
   let tests = testGroup "Tests" [ testGroup "Adder"      adderTests

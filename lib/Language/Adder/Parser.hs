@@ -2,12 +2,13 @@ module Language.Adder.Parser ( parse, parseFile ) where
 
 import           Control.Monad (void)
 import           Text.Megaparsec hiding (parse)
-import           Data.List.NonEmpty         as NE
-import qualified Text.Megaparsec.Char.Lexer as L
+-- import           Text.Megaparsec.String -- input stream is of type ‘String’
 import           Text.Megaparsec.Char
+import qualified Text.Megaparsec.Char.Lexer as L
+import           Text.PrettyPrint.HughesPJ         (text, vcat)
 import           Language.Adder.Types
-
-type Parser = Parsec SourcePos Text
+import           Data.Void
+import           Data.List.NonEmpty (NonEmpty (..))
 
 --------------------------------------------------------------------------------
 parseFile :: FilePath -> IO (Expr ())
@@ -21,11 +22,19 @@ parse = parseWith expr
 
 parseWith  :: Parser a -> FilePath -> Text -> a
 parseWith p f s = case runParser (whole p) f s of
-                    Left err -> panic (show err) (posSpan . NE.head . errorPos $ err)
-                    Right e  -> e
+    Left peb@(ParseErrorBundle errors posState) -> -- parse errors; we extract the first error from the error bundle
+      let
+        ((_, pos) :| _, _) = attachSourcePos errorOffset errors posState
+      in
+        panic (show (dErr peb)) (SS pos pos)
+    Right r -> r -- successful parse with no remaining input
+  where
+    -- Turns the multiline error string from megaparsec into a pretty-printable Doc.
+    dErr e = vcat (map text (lines (errorBundlePretty e)))
 
 -- https://mrkkrp.github.io/megaparsec/tutorials/parsing-simple-imperative-language.html
 
+type Parser = Parsec Void String
 --------------------------------------------------------------------------------
 -- | Top-Level Expression Parser
 --------------------------------------------------------------------------------
@@ -114,16 +123,16 @@ keywords =
 
 withSpan' :: Parser (SourceSpan -> a) -> Parser a
 withSpan' p = do
-  p1 <- getPosition
+  p1 <- getSourcePos 
   f  <- p
-  p2 <- getPosition
+  p2 <- getSourcePos
   return (f (SS p1 p2))
 
 withSpan :: Parser a -> Parser (a, SourceSpan)
 withSpan p = do
-  p1 <- getPosition
+  p1 <- getSourcePos
   x  <- p
-  p2 <- getPosition
+  p2 <- getSourcePos
   return (x, SS p1 p2)
 
 -- | `binder` parses BareBind, used for let-binds and function parameters.

@@ -50,10 +50,10 @@ tags:
 
 turnin: 
 	git commit -a -m "turnin"
-	git push origin master
+	git push origin main
 
 upstream:
 	git remote add upstream git@github.com:$(ORG)/$(ASGN)-$(COMPILER).git
 
 update:
-	git pull upstream master
+	git pull upstream main

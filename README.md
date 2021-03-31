@@ -424,4 +424,4 @@ $ make turnin
 
 This will simply do a `git commit` followed by a `git push` to send us your code.
 
-**We will use the _most recent commit_ of your code (on `master` branch) as your submission.**
+**We will use the _most recent commit_ of your code (on `main` branch) as your submission.**

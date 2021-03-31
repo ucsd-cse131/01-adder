@@ -56,4 +56,4 @@ upstream:
 	git remote add upstream git@github.com:$(ORG)/$(ASGN)-$(COMPILER).git
 
 update:
-	git pull upstream main
+	git pull upstream main --allow-unrelated-histories

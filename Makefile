@@ -53,7 +53,7 @@ turnin:
 	git push origin main
 
 upstream:
-	git remote add upstream git@github.com:$(ORG)/$(ASGN)-$(COMPILER).git
+	git remote add upstream https://github.com/$(ORG)/$(ASGN)-$(COMPILER).git
 
 update:
 	git pull upstream main

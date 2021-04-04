@@ -5,12 +5,12 @@ COMPILER=adder
 EXT=adder
 BUILD_OPTS=--ghc-options -O0 
 ######################################################
-REPL=cabal v2-repl
-CLEAN=cabal v2-clean
-BUILD=cabal v2-build $(BUILD_OPTS)
-TEST=cabal v2-test $(BUILD_OPTS) --test-show-details=always
-EXEC=cabal v2-run $(BUILD_OPTS) -v0
-UPDATE=cabal update
+REPL=stack repl --allow-different-user
+CLEAN=stack clean --allow-different-user
+BUILD=stack build --allow-different-user $(BUILD_OPTS)
+TEST=stack test --allow-different-user $(BUILD_OPTS)
+EXEC=stack exec --allow-different-user
+UPDATE=stack update
 ######################################################
 
 COMPILEREXEC=$(EXEC) -- $(COMPILER)
@@ -31,18 +31,17 @@ endif
 
 .PHONY: clean
 
-test: clean init.txt
+test: clean
 	$(TEST)
 
-bin: init.txt
+bin:
 	$(BUILD)
 
 clean:
 	rm -rf tests/output/*.o tests/output/*.s tests/output/*.dSYM tests/output/*.run tests/output/*.log tests/output/*.result tests/output/*.$(COMPILER) tests/output/*.result
 
-distclean: clean 
+distclean: clean
 	$(CLEAN)
-	rm -rf dist-newstyle 
 
 ghci: init.txt
 	$(REPL) $(BUILD_OPTS)

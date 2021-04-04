@@ -5,12 +5,12 @@ COMPILER=adder
 EXT=adder
 BUILD_OPTS=--ghc-options -O0 
 ######################################################
-REPL=stack repl --allow-different-user
-CLEAN=stack clean --allow-different-user
-BUILD=stack build --allow-different-user $(BUILD_OPTS)
-TEST=stack test --allow-different-user $(BUILD_OPTS)
-EXEC=stack exec --allow-different-user
-UPDATE=stack update
+REPL=cabal v2-repl
+CLEAN=cabal v2-clean
+BUILD=cabal v2-build $(BUILD_OPTS)
+TEST=cabal v2-test $(BUILD_OPTS) --test-show-details=always
+EXEC=cabal v2-run
+UPDATE=cabal update
 ######################################################
 
 COMPILEREXEC=$(EXEC) -- $(COMPILER)
@@ -31,10 +31,10 @@ endif
 
 .PHONY: clean
 
-test: clean
-	$(TEST)
+test: clean init.txt
+	$(TEST) 
 
-bin:
+bin: init.txt
 	$(BUILD)
 
 clean:
@@ -42,6 +42,7 @@ clean:
 
 distclean: clean
 	$(CLEAN)
+	rm -rf dist-newstyle 
 
 ghci: init.txt
 	$(REPL) $(BUILD_OPTS)
@@ -58,15 +59,3 @@ upstream:
 
 update:
 	git pull upstream main --allow-unrelated-histories
-
-tests/output/%.result: tests/output/%.run
-	$< > $@
-
-tests/output/%.run: tests/output/%.o c-bits/main.c
-	clang $(WINSTUFF) -g -m64 -o $@ c-bits/main.c $<
-
-tests/output/%.o: tests/output/%.s
-	nasm -f $(FORMAT) -o $@ $<
-
-tests/output/%.s: tests/input/%.$(EXT)
-	$(COMPILEREXEC) $< > $@

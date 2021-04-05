@@ -338,8 +338,9 @@ Each test is a [JSON](https://www.json.org/) object with three members:
    * In the second case, `ERROR` is a **substring** of the error message that should
      be produced. This includes problems building at the assembler/linker level,
      as well as any explicit errors thrown by `error` or `panic` calls in the
-     compiler itself. You _should_ use this case to explicitly test for the two
-     error cases mentioned above.
+     compiler itself. You _should_ use this case to explicitly test for errors 
+     thrown by the compilers during their execution, e.g. when compiling malformed 
+     source files.
 
 
 #### Running a Single Test
